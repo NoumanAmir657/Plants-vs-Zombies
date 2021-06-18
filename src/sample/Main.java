@@ -66,6 +66,7 @@ public class Main extends Application {
 
     private static int score;
     public GridPane gridPane = new GridPane();
+    public Rectangle[][] rectangleGrid = new Rectangle[5][9];
 
 
     public static void main(String[] args) {
@@ -86,29 +87,25 @@ public class Main extends Application {
         }
         for (int i = 0; i < 5; ++i){
             for (int j = 0; j < 9; ++j){
-                Rectangle rectangle = new Rectangle(110,110);
-                rectangle.setFill(Color.TRANSPARENT);
-                gridPane.add(rectangle,j,i);
+                rectangleGrid[i][j] = new Rectangle(110,110);
+                rectangleGrid[i][j].setFill(Color.TRANSPARENT);
+                gridPane.add(rectangleGrid[i][j],j,i);
+                rectangleGrid[i][j].setOnMouseClicked(new EventHandler<MouseEvent>()
+                {
+                    @Override
+                    public void handle(MouseEvent t) {
+                        Integer col = GridPane.getColumnIndex((Node) t.getSource());
+                        Integer row = GridPane.getRowIndex((Node) t.getSource());
+                        System.out.println(col.intValue());
+                        System.out.println(row.intValue());
+                    }
+                });
             }
         }
         gridPane.setGridLinesVisible(true);
         AnchorPane.setLeftAnchor(gridPane,330.0);
         AnchorPane.setTopAnchor(gridPane,70.0);
         anchorPane.getChildren().add(gridPane);
-        gridPane.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-
-                for( Node node: gridPane.getChildren()) {
-
-                    if( node instanceof Rectangle) {
-                        if( node.getBoundsInParent().contains(e.getSceneX(),  e.getSceneY())) {
-                            System.out.println( "Node: " + node + " at " + GridPane.getRowIndex( node) + "/" + GridPane.getColumnIndex( node));
-                        }
-                    }
-                }
-            }
-        });
         //new code
 
 
