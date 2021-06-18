@@ -19,6 +19,7 @@ public class Sunflower extends Plants {
     public int indexOfPosition;
     private int health;
     public Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2000), e -> run()));
+    private int yIndex;
 
     public Sunflower(){
         sunCount = 0;
@@ -38,11 +39,13 @@ public class Sunflower extends Plants {
         this.health-=10;
     }
 
-    public Sunflower(double x, double y){
+    public Sunflower(double x, double y, int yIndex){
         this.health = 50;
         this.x = x;
         this.y = y;
+        this.yIndex = yIndex;
         //70, 180, 300, 390, 500
+        /*
         if (this.y >= 70 && this.y <= 180){
             this.indexOfPosition = 0;
         }
@@ -58,6 +61,8 @@ public class Sunflower extends Plants {
         else if (this.y > 500){
             this.indexOfPosition = 4;
         }
+
+         */
     }
 
     public String[] getImage(){

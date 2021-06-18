@@ -17,7 +17,7 @@ public class BucketHeadZombie {
     private int zombieCount = 0;
     private static final double DX = 2;
     private boolean stop;
-    private double[] positions = new double[]{70, 180, 300, 390, 500};
+    private double[] positions = new double[]{70, 180, 290, 400, 510};
     public int indexOfPosition;
     private Plants madeTheStop = null;
     public static int numberOfZombiesMade = 0;
@@ -59,7 +59,7 @@ public class BucketHeadZombie {
 
     public BucketHeadZombie(){
         numberOfZombiesMade++;
-        this.x = 1146.0;
+        this.x = 330 + 9*110;
         this.indexOfPosition = (int) Math.floor(Math.random()*(4-0+1)+0);
         this.y = positions[this.indexOfPosition]; //increment of 120
         this.stop = false;

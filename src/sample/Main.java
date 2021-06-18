@@ -68,6 +68,9 @@ public class Main extends Application {
     public GridPane gridPane = new GridPane();
     public Rectangle[][] rectangleGrid = new Rectangle[5][9];
 
+    private int xCellIndex;
+    private int yCellIndex;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -94,10 +97,8 @@ public class Main extends Application {
                 {
                     @Override
                     public void handle(MouseEvent t) {
-                        Integer col = GridPane.getColumnIndex((Node) t.getSource());
-                        Integer row = GridPane.getRowIndex((Node) t.getSource());
-                        System.out.println(col.intValue());
-                        System.out.println(row.intValue());
+                        xCellIndex = GridPane.getColumnIndex((Node) t.getSource()).intValue();
+                        yCellIndex = GridPane.getRowIndex((Node) t.getSource()).intValue();
                     }
                 });
             }
@@ -176,7 +177,7 @@ public class Main extends Application {
                     if (Cards.getValue() >= Sunflower.getCost()){
                         //System.out.println(m.getSceneX());
                         //System.out.println(m.getSceneY());
-                        sunflower = new Sunflower(m.getSceneX(), m.getSceneY());
+                        sunflower = new Sunflower(330+(xCellIndex*110), 70+(yCellIndex*110),yCellIndex);
                         //System.out.println(sunflower.indexOfPosition);
                         sunflowers.add(sunflower);
                         plants.add(sunflower);
@@ -194,7 +195,7 @@ public class Main extends Application {
             scene.setOnMouseClicked((MouseEvent m) ->{
                 if (flag){
                     if (Cards.getValue() >= PeaShooter.getCOST()){
-                        peaShooter = new PeaShooter(m.getSceneX(), m.getSceneY());
+                        peaShooter = new PeaShooter(330+(xCellIndex*110),70+(yCellIndex*110), yCellIndex);
                         //System.out.println(peaShooter.indexOfPosition);
                         peashooters.add(peaShooter);
                         plants.add(peaShooter);
@@ -375,6 +376,10 @@ public class Main extends Application {
         primaryStage.setTitle("Game Over");
         primaryStage.setResizable(false);
         primaryStage.show();
+    }
+
+    public void calculateHeight(){
+
     }
 
     class TimerZombies extends TimerTask {
