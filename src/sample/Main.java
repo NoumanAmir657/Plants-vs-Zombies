@@ -6,6 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -83,17 +84,30 @@ public class Main extends Application {
             ColumnConstraints column = new ColumnConstraints(110);
             gridPane.getColumnConstraints().add(column);
         }
-        //gridPane.setAlignment(Pos.CENTER);
+        for (int i = 0; i < 5; ++i){
+            for (int j = 0; j < 9; ++j){
+                Rectangle rectangle = new Rectangle(110,110);
+                rectangle.setFill(Color.TRANSPARENT);
+                gridPane.add(rectangle,j,i);
+            }
+        }
         gridPane.setGridLinesVisible(true);
         AnchorPane.setLeftAnchor(gridPane,330.0);
         AnchorPane.setTopAnchor(gridPane,70.0);
         anchorPane.getChildren().add(gridPane);
-        gridPane.setOnMouseEntered(e->{
-            Node cell = (Node)e.getSource();
-            Integer xCell = gridPane.getColumnIndex(cell);
-            Integer yCell = gridPane.getRowIndex(cell);
-            //System.out.println(xCell.intValue());
-            //System.out.println(yCell.intValue());
+        gridPane.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+
+                for( Node node: gridPane.getChildren()) {
+
+                    if( node instanceof Rectangle) {
+                        if( node.getBoundsInParent().contains(e.getSceneX(),  e.getSceneY())) {
+                            System.out.println( "Node: " + node + " at " + GridPane.getRowIndex( node) + "/" + GridPane.getColumnIndex( node));
+                        }
+                    }
+                }
+            }
         });
         //new code
 
@@ -120,10 +134,6 @@ public class Main extends Application {
 
 
         timeline.play();
-
-        //if (gameOver){
-          //  drawGameOverScreen();
-        //}
     }
 
 
