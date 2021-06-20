@@ -16,10 +16,8 @@ public class Sunflower extends Plants {
     private int sunCount;
     private int counter;
     private final static int COST = 50;
-    public int indexOfPosition;
     private int health;
     public Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2000), e -> run()));
-    private int yIndex;
 
     public Sunflower(){
         sunCount = 0;
@@ -39,11 +37,12 @@ public class Sunflower extends Plants {
         this.health-=10;
     }
 
-    public Sunflower(double x, double y, int yIndex){
+    public Sunflower(double x, double y, int yIndex, int xIndex){
         this.health = 50;
         this.x = x;
         this.y = y;
-        this.yIndex = yIndex;
+        setxIndex(xIndex);
+        setyIndex(yIndex);
         //70, 180, 300, 390, 500
         /*
         if (this.y >= 70 && this.y <= 180){
@@ -93,6 +92,7 @@ public class Sunflower extends Plants {
             Cards.addToValue();
         }
     }
+
 
     public void run(){
         subFromHealth();

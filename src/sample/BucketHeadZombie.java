@@ -18,7 +18,7 @@ public class BucketHeadZombie {
     private static final double DX = 2;
     private boolean stop;
     private double[] positions = new double[]{70, 180, 290, 400, 510};
-    public int indexOfPosition;
+    public int yIndex;
     private Plants madeTheStop = null;
     public static int numberOfZombiesMade = 0;
 
@@ -60,8 +60,8 @@ public class BucketHeadZombie {
     public BucketHeadZombie(){
         numberOfZombiesMade++;
         this.x = 330 + 9*110;
-        this.indexOfPosition = (int) Math.floor(Math.random()*(4-0+1)+0);
-        this.y = positions[this.indexOfPosition]; //increment of 120
+        this.yIndex = (int) Math.floor(Math.random()*(4-0+1)+0);
+        this.y = positions[this.yIndex]; //increment of 120
         this.stop = false;
         this.health = 100;
     }
@@ -78,7 +78,7 @@ public class BucketHeadZombie {
         }
     }
 
-    public void deceaseHealth(){
+    public void decreaseHealth(){
         this.health-= PeaShooter.ATTACKPOWER;
     }
 
@@ -88,6 +88,14 @@ public class BucketHeadZombie {
 
     public boolean getStop(){
         return stop;
+    }
+
+    public int getyIndex() {
+        return yIndex;
+    }
+
+    public void setyIndex(int yIndex) {
+        this.yIndex = yIndex;
     }
 }
 

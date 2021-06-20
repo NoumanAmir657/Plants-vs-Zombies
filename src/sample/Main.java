@@ -99,6 +99,8 @@ public class Main extends Application {
                     public void handle(MouseEvent t) {
                         xCellIndex = GridPane.getColumnIndex((Node) t.getSource()).intValue();
                         yCellIndex = GridPane.getRowIndex((Node) t.getSource()).intValue();
+                        System.out.println(xCellIndex);
+                        System.out.println(yCellIndex);
                     }
                 });
             }
@@ -127,7 +129,7 @@ public class Main extends Application {
         createShooter();
         timer.schedule(timertask,2000,10000);
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(100), e -> run(gc)));
+        timeline = new Timeline(new KeyFrame(Duration.millis(50), e -> run(gc)));
         timeline.setCycleCount(Animation.INDEFINITE);
 
 
@@ -162,7 +164,6 @@ public class Main extends Application {
 
         setHealth();
         checkStoppedZombies();
-        //rmPlantOnLowHealth();
     }
 
     public void setBackground(GraphicsContext gc){
@@ -177,7 +178,7 @@ public class Main extends Application {
                     if (Cards.getValue() >= Sunflower.getCost()){
                         //System.out.println(m.getSceneX());
                         //System.out.println(m.getSceneY());
-                        sunflower = new Sunflower(330+(xCellIndex*110), 70+(yCellIndex*110),yCellIndex);
+                        sunflower = new Sunflower(330+(xCellIndex*110), 70+(yCellIndex*110),yCellIndex, xCellIndex);
                         //System.out.println(sunflower.indexOfPosition);
                         sunflowers.add(sunflower);
                         plants.add(sunflower);
@@ -195,7 +196,7 @@ public class Main extends Application {
             scene.setOnMouseClicked((MouseEvent m) ->{
                 if (flag){
                     if (Cards.getValue() >= PeaShooter.getCOST()){
-                        peaShooter = new PeaShooter(330+(xCellIndex*110),70+(yCellIndex*110), yCellIndex);
+                        peaShooter = new PeaShooter(330+(xCellIndex*110),70+(yCellIndex*110), yCellIndex, xCellIndex);
                         //System.out.println(peaShooter.indexOfPosition);
                         peashooters.add(peaShooter);
                         plants.add(peaShooter);
@@ -213,7 +214,8 @@ public class Main extends Application {
             scene.setOnMouseClicked((MouseEvent m) -> {
                 if (shovel.isFlag()){
                     for (int i = 0; i < plants.size(); ++i){
-                        if ((Math.abs(m.getSceneX() - plants.get(i).getX()) <= 10) && (Math.abs(m.getSceneY() - plants.get(i).getY()) <= 10)){
+                        //Math.abs(m.getSceneX() - plants.get(i).getX()) <= 10) && (Math.abs(m.getSceneY() - plants.get(i).getY()) <= 10
+                        if ((plants.get(i).getxIndex() == xCellIndex && plants.get(i).getyIndex() == yCellIndex)){
                             for (BucketHeadZombie zombie: bucketHeadZombies){
                                 if (zombie.getMadeTheStop() == plants.get(i)){
                                     zombie.setStop(false);
@@ -260,7 +262,7 @@ public class Main extends Application {
 
     public boolean inRow(PeaShooter shooter) {
         for (BucketHeadZombie zombie: bucketHeadZombies){
-            if (zombie.indexOfPosition == shooter.indexOfPosition && ((shooter.getX() - zombie.getX()) < 0)){
+            if (zombie.getyIndex() == shooter.getyIndex() && ((shooter.getX() - zombie.getX()) < 0)){
                 return true;
             }
         }
@@ -270,12 +272,12 @@ public class Main extends Application {
     public boolean collision(){
         for (PeaShooter shooter: peashooters){
             for (int j = 0; j < bucketHeadZombies.size(); ++j){
-                if (bucketHeadZombies.get(j).indexOfPosition == shooter.indexOfPosition){
+                if (bucketHeadZombies.get(j).getyIndex() == shooter.getyIndex()){
                     for (int i = 0; i < shooter.peaList.size(); ++i){
                         if (Math.abs(shooter.peaList.get(i).getX() - bucketHeadZombies.get(j).getX()) < 8){
                             shooter.peaList.remove(i);
-                            shooter.peaList.add(new Pea(shooter.getX(),shooter.getY()));
-                            bucketHeadZombies.get(j).deceaseHealth();
+                            shooter.peaList.add(new Pea(shooter.getX(),shooter.getY(), shooter.getxIndex(), shooter.getyIndex()));
+                            bucketHeadZombies.get(j).decreaseHealth();
                             if (bucketHeadZombies.get(j).getHealth() == 0){
                                 burntZombie.setX(bucketHeadZombies.get(j).getX());
                                 burntZombie.setY(bucketHeadZombies.get(j).getY());
@@ -378,9 +380,6 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public void calculateHeight(){
-
-    }
 
     class TimerZombies extends TimerTask {
         public void run(){

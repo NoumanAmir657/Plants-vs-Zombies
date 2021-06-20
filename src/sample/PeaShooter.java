@@ -19,11 +19,9 @@ public class PeaShooter extends Plants {
     private int shooterCount;
     private final static int COST = 100;
     public final static int ATTACKPOWER = 20;
-    public int indexOfPosition;
     public final List<Pea> peaList = new ArrayList<>();
     public Timeline timeline = new Timeline(new KeyFrame(Duration.millis(2000), e -> run()));
     private int health;
-    private int yIndex;
 
 
 
@@ -35,12 +33,13 @@ public class PeaShooter extends Plants {
         this.health = 50;
 
     }
-    public PeaShooter(double x, double y, int yIndex){
+    public PeaShooter(double x, double y, int yIndex, int xIndex){
         this.health = 50;
         this.x = x;
         this.y = y;
-        this.yIndex = yIndex;
-        peaList.add(new Pea(x,y));
+        setxIndex(xIndex);
+        setyIndex(yIndex);
+        peaList.add(new Pea(x, y, xIndex, yIndex));
         /*
         if (this.y >= 70 && this.y <= 180){
             this.indexOfPosition = 0;
