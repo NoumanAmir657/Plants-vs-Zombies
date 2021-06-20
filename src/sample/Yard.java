@@ -4,7 +4,7 @@ public class Yard {
     private static int yardHealth = 1000;
 
     public static void decreaseHealth(){
-        Yard.yardHealth-=20;
+        Yard.yardHealth-=1;
     }
 
     public static int getYardHealth(){

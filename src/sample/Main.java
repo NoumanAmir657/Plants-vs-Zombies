@@ -127,7 +127,7 @@ public class Main extends Application {
         createSunflower();
         removePlant();
         createShooter();
-        timer.schedule(timertask,2000,10000);
+        timer.schedule(timertask,2000,7000);
 
         timeline = new Timeline(new KeyFrame(Duration.millis(50), e -> run(gc)));
         timeline.setCycleCount(Animation.INDEFINITE);
