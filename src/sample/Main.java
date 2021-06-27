@@ -105,7 +105,7 @@ public class Main extends Application {
                 });
             }
         }
-        gridPane.setGridLinesVisible(true);
+        //gridPane.setGridLinesVisible(true);
         AnchorPane.setLeftAnchor(gridPane,330.0);
         AnchorPane.setTopAnchor(gridPane,70.0);
         anchorPane.getChildren().add(gridPane);
@@ -274,7 +274,7 @@ public class Main extends Application {
             for (int j = 0; j < bucketHeadZombies.size(); ++j){
                 if (bucketHeadZombies.get(j).getyIndex() == shooter.getyIndex()){
                     for (int i = 0; i < shooter.peaList.size(); ++i){
-                        if (Math.abs(shooter.peaList.get(i).getX() - bucketHeadZombies.get(j).getX()) < 8){
+                        if (Math.abs((shooter.peaList.get(i).getX() + getSquareSize()*0.25) - (bucketHeadZombies.get(j).getX() + getSquareSize()*2.9/2)) < 8){
                             shooter.peaList.remove(i);
                             shooter.peaList.add(new Pea(shooter.getX(),shooter.getY(), shooter.getxIndex(), shooter.getyIndex()));
                             bucketHeadZombies.get(j).decreaseHealth();
@@ -331,7 +331,6 @@ public class Main extends Application {
                     if (sunflowers.get(i) == zombie.getMadeTheStop()){
                         zombie.setMadeTheStop(null);
                         zombie.setStop(false);
-                        //System.out.println("WTF");
                         break;
                     }
                 }

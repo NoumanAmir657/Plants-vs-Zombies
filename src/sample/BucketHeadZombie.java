@@ -22,8 +22,6 @@ public class BucketHeadZombie {
     private Plants madeTheStop = null;
     public static int numberOfZombiesMade = 0;
 
-
-
     public double getX() {
         return x;
     }
@@ -68,7 +66,7 @@ public class BucketHeadZombie {
 
 
     public void drawImage(GraphicsContext gc){
-        gc.drawImage(new Image(ZOMBIE[this.zombieCount]), x,y,Main.getSquareSize()*2.5,Main.getSquareSize()*2.5);
+        gc.drawImage(new Image(ZOMBIE[this.zombieCount]), x,y-20,Main.getSquareSize()*2.9,Main.getSquareSize()*2.9);
         ++(this.zombieCount);
         if (this.zombieCount == 11){
             this.zombieCount = 0;

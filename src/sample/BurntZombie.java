@@ -34,7 +34,7 @@ public class BurntZombie {
         timeline.play();
     }
     public void run(GraphicsContext gc){
-        gc.drawImage(new Image(BURNTZOMBIE[zombieCount]), x,y,Main.getSquareSize()*2.5,Main.getSquareSize()*2.5);
+        gc.drawImage(new Image(BURNTZOMBIE[zombieCount]), x,y-20,Main.getSquareSize()*2.9,Main.getSquareSize()*2.9);
         ++(this.zombieCount);
         if (this.zombieCount == 21){
             this.zombieCount = 0;
