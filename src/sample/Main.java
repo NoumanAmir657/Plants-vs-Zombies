@@ -23,11 +23,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Color;
 
@@ -146,9 +144,17 @@ public class Main extends Application {
         root.getChildren().add(cards.setSunCounterValue());
         root.getChildren().add(cards.setWaveValue());
 
-        for(BucketHeadZombie item: bucketHeadZombies){
-            item.drawImage(gc);
+        try{
+            synchronized (bucketHeadZombies){
+                for(BucketHeadZombie item: bucketHeadZombies){
+                    item.drawImage(gc);
+                }
+            }
         }
+        catch (ConcurrentModificationException e){
+            System.out.println("exception here");
+        }
+
         for(PeaShooter item: peashooters){
             item.drawPeashooter(gc);
             if (inRow(item)) {
@@ -381,7 +387,7 @@ public class Main extends Application {
 
 
     class TimerZombies extends TimerTask {
-        public void run(){
+        public synchronized void run(){
             bucketHeadZombies.add(new BucketHeadZombie());
         }
     }
