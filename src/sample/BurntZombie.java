@@ -8,10 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 public class BurntZombie {
-    private static final String[] BURNTZOMBIE = new String[]{"resource/bz1.gif", "resource/bz2.gif", "resource/bz3.gif", "resource/bz4.gif", "resource/bz5.gif"
-            ,"resource/bz6.gif","resource/bz7.gif", "resource/bz8.gif", "resource/bz9.gif", "resource/bz10.gif", "resource/bz11.gif",
-            "resource/bz12.gif", "resource/bz13.gif", "resource/bz14.gif", "resource/bz15.gif", "resource/bz16.gif"
-            ,"resource/bz17.gif","resource/bz18.gif", "resource/bz19.gif", "resource/bz20.gif", "resource/bz21.gif", "resource/bz22.gif"};
+    private static final String[] BURNTZOMBIE = new String[]{"resource/burnt0.gif","resource/burnt1.gif","resource/burnt2.gif","resource/burnt3.gif","resource/burnt4.gif","resource/burnt5.gif","resource/burnt6.gif","resource/burnt7.gif","resource/burnt8.gif","resource/burnt9.gif","resource/burnt10.gif","resource/burnt11.gif","resource/burnt12.gif","resource/burnt13.gif","resource/burnt14.gif","resource/burnt15.gif","resource/burnt16.gif","resource/burnt17.gif","resource/burnt18.gif","resource/burnt19.gif","resource/burnt20.gif","resource/burnt21.gif","resource/burnt22.gif","resource/burnt23.gif","resource/burnt24.gif","resource/burnt25.gif","resource/burnt26.gif","resource/burnt27.gif","resource/burnt28.gif","resource/burnt29.gif"};
 
     private double x;
     private double y;
@@ -36,7 +33,7 @@ public class BurntZombie {
     public void run(GraphicsContext gc){
         gc.drawImage(new Image(BURNTZOMBIE[zombieCount]), x,y-20,Main.getSquareSize()*2.9,Main.getSquareSize()*2.9);
         ++(this.zombieCount);
-        if (this.zombieCount == 21){
+        if (this.zombieCount == 30){
             this.zombieCount = 0;
         }
     }

@@ -13,9 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PeaShooter extends Plants {
-    private static final String[] SHOOTER = new String[]{"resource/p0.gif", "resource/p1.gif", "resource/p2.gif", "resource/p3.gif", "resource/p4.gif"
-            ,"resource/p5.gif","resource/p6.gif", "resource/p7.gif", "resource/p8.gif", "resource/p9.gif", "resource/p10.gif"};
-
+    private static final String[] SHOOTER = new String[]{"resource/peashooter0.gif","resource/peashooter1.gif","resource/peashooter2.gif","resource/peashooter3.gif","resource/peashooter4.gif","resource/peashooter5.gif","resource/peashooter6.gif","resource/peashooter7.gif","resource/peashooter8.gif","resource/peashooter9.gif","resource/peashooter10.gif","resource/peashooter11.gif","resource/peashooter12.gif","resource/peashooter13.gif","resource/peashooter14.gif","resource/peashooter15.gif","resource/peashooter16.gif","resource/peashooter17.gif","resource/peashooter18.gif","resource/peashooter19.gif","resource/peashooter20.gif","resource/peashooter21.gif","resource/peashooter22.gif","resource/peashooter23.gif"};
     private int shooterCount;
     private final static int COST = 100;
     public final static int ATTACKPOWER = 20;
@@ -70,7 +68,7 @@ public class PeaShooter extends Plants {
     public void drawPeashooter(GraphicsContext gc){
         gc.drawImage(new Image(SHOOTER[this.shooterCount]), x,y,Main.getSquareSize()*2,Main.getSquareSize()*2);
         ++(this.shooterCount);
-        if (this.shooterCount == 11){
+        if (this.shooterCount == 24){
             this.shooterCount = 0;
         }
     }

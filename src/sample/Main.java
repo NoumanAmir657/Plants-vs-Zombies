@@ -77,18 +77,20 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         //new code
+        int c = 105;
+        int r = 120;
         AnchorPane anchorPane = new AnchorPane();
         for (int i = 0; i < 5; ++i){
-            RowConstraints row = new RowConstraints(110);
+            RowConstraints row = new RowConstraints(r);
             gridPane.getRowConstraints().add(row);
         }
         for (int i = 0; i < 9; ++i){
-            ColumnConstraints column = new ColumnConstraints(110);
+            ColumnConstraints column = new ColumnConstraints(c);
             gridPane.getColumnConstraints().add(column);
         }
         for (int i = 0; i < 5; ++i){
             for (int j = 0; j < 9; ++j){
-                rectangleGrid[i][j] = new Rectangle(110,110);
+                rectangleGrid[i][j] = new Rectangle(c,r);
                 rectangleGrid[i][j].setFill(Color.TRANSPARENT);
                 gridPane.add(rectangleGrid[i][j],j,i);
                 rectangleGrid[i][j].setOnMouseClicked(new EventHandler<MouseEvent>()
@@ -103,9 +105,9 @@ public class Main extends Application {
                 });
             }
         }
-        //gridPane.setGridLinesVisible(true);
-        AnchorPane.setLeftAnchor(gridPane,330.0);
-        AnchorPane.setTopAnchor(gridPane,70.0);
+        gridPane.setGridLinesVisible(true);
+        AnchorPane.setLeftAnchor(gridPane,430.0);
+        AnchorPane.setTopAnchor(gridPane,75.0);
         anchorPane.getChildren().add(gridPane);
         //new code
 
@@ -127,7 +129,7 @@ public class Main extends Application {
         createShooter();
         timer.schedule(timertask,2000,7000);
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(50), e -> run(gc)));
+        timeline = new Timeline(new KeyFrame(Duration.millis(40), e -> run(gc)));
         timeline.setCycleCount(Animation.INDEFINITE);
 
 
@@ -173,7 +175,7 @@ public class Main extends Application {
     }
 
     public void setBackground(GraphicsContext gc){
-        gc.drawImage(new Image("resource/Frontyard.png"), 0,0,WIDTH,HEIGHT);
+        gc.drawImage(new Image("resource/Lawn.jpg"), 0,0,WIDTH,HEIGHT);
     }
 
     public void createSunflower(){
@@ -184,7 +186,7 @@ public class Main extends Application {
                     if (Cards.getValue() >= Sunflower.getCost()){
                         //System.out.println(m.getSceneX());
                         //System.out.println(m.getSceneY());
-                        sunflower = new Sunflower(330+(xCellIndex*110), 70+(yCellIndex*110),yCellIndex, xCellIndex);
+                        sunflower = new Sunflower(430+(xCellIndex*105), 75+(yCellIndex*120),yCellIndex, xCellIndex);
                         //System.out.println(sunflower.indexOfPosition);
                         sunflowers.add(sunflower);
                         plants.add(sunflower);
@@ -202,7 +204,7 @@ public class Main extends Application {
             scene.setOnMouseClicked((MouseEvent m) ->{
                 if (flag){
                     if (Cards.getValue() >= PeaShooter.getCOST()){
-                        peaShooter = new PeaShooter(330+(xCellIndex*110),70+(yCellIndex*110), yCellIndex, xCellIndex);
+                        peaShooter = new PeaShooter(430+(xCellIndex*105),75+(yCellIndex*120), yCellIndex, xCellIndex);
                         //System.out.println(peaShooter.indexOfPosition);
                         peashooters.add(peaShooter);
                         plants.add(peaShooter);
@@ -349,7 +351,7 @@ public class Main extends Application {
 
     public void stopZombie(){
         for (BucketHeadZombie zombie: bucketHeadZombies){
-            if (zombie.getX() < 330){
+            if (zombie.getX() < 430){
                 zombie.setStop(true);
             }
         }
@@ -357,7 +359,7 @@ public class Main extends Application {
 
     public void checkStoppedZombies(){
         for (int i = 0; i < bucketHeadZombies.size(); ++i){
-            if (bucketHeadZombies.get(i).getX() < 330){
+            if (bucketHeadZombies.get(i).getX() < 430){
                 Yard.decreaseHealth();
             }
         }
@@ -387,8 +389,10 @@ public class Main extends Application {
 
 
     class TimerZombies extends TimerTask {
-        public synchronized void run(){
-            bucketHeadZombies.add(new BucketHeadZombie());
+        public void run(){
+            synchronized (bucketHeadZombies){
+                bucketHeadZombies.add(new BucketHeadZombie());
+            }
         }
     }
 }
