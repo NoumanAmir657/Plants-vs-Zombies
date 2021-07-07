@@ -27,7 +27,7 @@ public class BurntZombie {
 
     public void drawImage(GraphicsContext gc){
         timeline = new Timeline(new KeyFrame(Duration.millis(50), e -> run(gc)));
-        timeline.setCycleCount(21); //21 because of 21 frames.
+        timeline.setCycleCount(29); //21 because of 21 frames.
         timeline.play();
     }
     public void run(GraphicsContext gc){

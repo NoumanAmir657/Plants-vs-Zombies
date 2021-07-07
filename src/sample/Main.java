@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
@@ -64,10 +65,11 @@ public class Main extends Application {
 
     private static int score;
     public GridPane gridPane = new GridPane();
-    public Rectangle[][] rectangleGrid = new Rectangle[5][9];
+    public Rectangle[][] rectangleGrid = new Rectangle[5][10];
 
     private int xCellIndex;
     private int yCellIndex;
+    private final List<LawnMower> lawnMowers = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -84,12 +86,12 @@ public class Main extends Application {
             RowConstraints row = new RowConstraints(r);
             gridPane.getRowConstraints().add(row);
         }
-        for (int i = 0; i < 9; ++i){
+        for (int i = 0; i < 10; ++i){
             ColumnConstraints column = new ColumnConstraints(c);
             gridPane.getColumnConstraints().add(column);
         }
         for (int i = 0; i < 5; ++i){
-            for (int j = 0; j < 9; ++j){
+            for (int j = 0; j < 10; ++j){
                 rectangleGrid[i][j] = new Rectangle(c,r);
                 rectangleGrid[i][j].setFill(Color.TRANSPARENT);
                 gridPane.add(rectangleGrid[i][j],j,i);
@@ -105,8 +107,8 @@ public class Main extends Application {
                 });
             }
         }
-        gridPane.setGridLinesVisible(true);
-        AnchorPane.setLeftAnchor(gridPane,430.0);
+        //gridPane.setGridLinesVisible(true);
+        AnchorPane.setLeftAnchor(gridPane,325.0);
         AnchorPane.setTopAnchor(gridPane,75.0);
         anchorPane.getChildren().add(gridPane);
         //new code
@@ -124,10 +126,11 @@ public class Main extends Application {
         primaryStage.show();
         gc = canvas.getGraphicsContext2D();
 
+        initializeMower();
         createSunflower();
         removePlant();
         createShooter();
-        timer.schedule(timertask,2000,7000);
+        timer.schedule(timertask,2000,4000);
 
         timeline = new Timeline(new KeyFrame(Duration.millis(40), e -> run(gc)));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -140,6 +143,16 @@ public class Main extends Application {
     private void run(GraphicsContext gc){
 
         setBackground(gc);
+        synchronized (lawnMowers){
+            for (LawnMower item : lawnMowers){
+                if (item.getState() == 0){
+                    item.drawImageIdle(gc);
+                }
+                else if(item.getState() == 1){
+                    item.drawImageActivated(gc);
+                }
+            }
+        }
         for (Sunflower item : sunflowers){
             item.drawSunflower(gc);
         }
@@ -167,6 +180,12 @@ public class Main extends Application {
         }
         stopZombie();
         collision();
+        collisionMower();
+        for (LawnMower item: lawnMowers){
+            if (item.getX() > 1200){
+                item.setState(2);
+            }
+        }
 
         inRange();
 
@@ -186,7 +205,7 @@ public class Main extends Application {
                     if (Cards.getValue() >= Sunflower.getCost()){
                         //System.out.println(m.getSceneX());
                         //System.out.println(m.getSceneY());
-                        sunflower = new Sunflower(430+(xCellIndex*105), 75+(yCellIndex*120),yCellIndex, xCellIndex);
+                        sunflower = new Sunflower(430+((xCellIndex-1)*105), 75+(yCellIndex*120),yCellIndex, xCellIndex);
                         //System.out.println(sunflower.indexOfPosition);
                         sunflowers.add(sunflower);
                         plants.add(sunflower);
@@ -204,7 +223,7 @@ public class Main extends Application {
             scene.setOnMouseClicked((MouseEvent m) ->{
                 if (flag){
                     if (Cards.getValue() >= PeaShooter.getCOST()){
-                        peaShooter = new PeaShooter(430+(xCellIndex*105),75+(yCellIndex*120), yCellIndex, xCellIndex);
+                        peaShooter = new PeaShooter(430+((xCellIndex-1)*105),75+(yCellIndex*120), yCellIndex, xCellIndex);
                         //System.out.println(peaShooter.indexOfPosition);
                         peashooters.add(peaShooter);
                         plants.add(peaShooter);
@@ -305,6 +324,25 @@ public class Main extends Application {
         return false;
     }
 
+    public void collisionMower(){
+        synchronized (lawnMowers){
+            for (LawnMower item: lawnMowers){
+                for (int j = 0; j < bucketHeadZombies.size(); ++j){
+                    if (bucketHeadZombies.get(j).getyIndex() == item.getyIndex() && item.getState() == 1){
+                        if (Math.abs((item.getX() + getSquareSize()*2.5/2) - (bucketHeadZombies.get(j).getX() + getSquareSize()*2.9/2)) < 3){
+                            burntZombie.setX(bucketHeadZombies.get(j).getX());
+                            burntZombie.setY(bucketHeadZombies.get(j).getY());
+                            burntZombie.drawImage(gc);
+                            bucketHeadZombies.remove(j);
+                            score+=5;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     public void setHealth(){
         for (BucketHeadZombie zombie: bucketHeadZombies){
             if (zombie.isStop()){
@@ -353,6 +391,11 @@ public class Main extends Application {
         for (BucketHeadZombie zombie: bucketHeadZombies){
             if (zombie.getX() < 430){
                 zombie.setStop(true);
+                for (LawnMower item: lawnMowers){
+                    if (item.getyIndex() == zombie.getyIndex() && item.getState() == 0){
+                        item.setState(1);
+                    }
+                }
             }
         }
     }
@@ -378,13 +421,19 @@ public class Main extends Application {
         scr.setFont(Font.font("verdana", FontPosture.REGULAR, 20));
         stackPane.getChildren().add(scr);
 
-
-
         Scene scene = new Scene(stackPane,400,400);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Game Over");
         primaryStage.setResizable(false);
         primaryStage.show();
+    }
+
+    public void initializeMower(){
+        lawnMowers.add(new LawnMower(325,75, 0, 0));
+        lawnMowers.add(new LawnMower(325,195,1, 0));
+        lawnMowers.add(new LawnMower(325,315,2, 0));
+        lawnMowers.add(new LawnMower(325,435,3, 0));
+        lawnMowers.add(new LawnMower(325,555,4, 0));
     }
 
 
